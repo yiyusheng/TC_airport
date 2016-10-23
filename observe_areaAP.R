@@ -15,13 +15,41 @@
 rm(list = ls())
 source('head.R')
 source('dirFunc.R')
-source('arimaFunc.R')
-require(forecast)
-load(file.path(dir_data,'dataLoad.Rda'))
+source('util.R')
+
+# source('arimaFunc.R')
+# require(forecast)
+load(file.path(dir_data,'dataLoad2nd.Rda'))
 
 ####################################
-subts.start <- as.POSIXct('2016-09-12',tz = 'UTC')
-subts.end <- as.POSIXct('2016-09-13',tz = 'UTC')
+subts.start <- as.POSIXct('2016-09-10 19:00:00',tz = 'UTC')
+subts.end <- as.POSIXct('2016-09-25 15:00:00',tz = 'UTC')
+
+x <- lapply(split.dataAP10min,function(ap10){
+  ggsave(plot = plot_ap_data(subset(ap10,as.Date(timeStamp) == as.Date('2016-09-14') | 
+                                      as.Date(timeStamp) == as.Date('2016-09-15') | 
+                                      as.Date(timeStamp) == as.Date('2016-09-16'))),
+         file = file.path(dir_data,'ap_figure',paste(ap10$WIFIAPTag[1],'.png',sep='')),
+         width = 12,height = 6,dpi = 100)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 get_area_pc <- function(df){
   df$timeStamp <- factor(df$timeStamp)

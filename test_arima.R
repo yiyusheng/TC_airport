@@ -19,26 +19,26 @@ source('arimaFunc.R')
 source('areaPCFunc.R') 
 require(forecast)
 
-load(file.path(dir_data,'dataLoad.Rda'))
-load(file.path(dir_data,'areaPC.Rda'))
-load(file.path(dir_data,'smpIdx.Rda'))
-obj.Para <- split.dataAP10min[idx]
-def_margin()
+load(file.path(dir_data,'dataLoad2nd.Rda'))
+# load(file.path(dir_data,'areaPC.Rda'))
+# load(file.path(dir_data,'smpIdx.Rda'))
+obj.Para <- split.dataAP10min[1:10]
+# def_margin()
 
-data.depar.filter <- gen_data.depa(data.departure,data.flights,data.gates)
+# data.depar.filter <- gen_data.depa(data.departure,data.flights,data.gates)
 # split.passenger_area <- split(data.depar.filter,data.depar.filter$BGATE_AREA)
 
-split.area <- split(data.ap10min,data.ap10min$area)
+# split.area <- split(data.ap10min,data.ap10min$area)
 
-data.psg <- data.depar.filter
-data.area <- gen_pc_area_ts(split.area[[1]])
+# data.psg <- data.depar.filter
+# data.area <- gen_pc_area_ts(split.area[[1]])
 
 # S1. do parallel
 require(doParallel)
 numCore <- floor(detectCores()*0.9)
 ck <- makeCluster(min(numCore,length(obj.Para)),outfile = '')
 registerDoParallel(ck)
-r <- foreach(i = obj.Para,.verbose = T,.packages = c('ggplot2','forecast')) %dopar% test_arima(i,T,T)
+r <- foreach(i = obj.Para,.verbose = T,.packages = c('ggplot2','forecast')) %dopar% test_arima(i,T,F)
 stopCluster(ck)
 
 r1 <- do.call(rbind,r)

@@ -82,7 +82,7 @@ plot_ap_data <- function(apTag){
     data <- apTag
   }
   tt <- data$WIFIAPTag[1]
-  p <- ggplot(data,aes(x = timeStamp,y = passengerCount)) + geom_line() + geom_point() +
+  p <- ggplot(data,aes(x = timeStamp,y = passengerCount)) + geom_line() +
     ggtitle(tt)
   print(p)
   p
@@ -129,4 +129,19 @@ def_margin <- function(){
 # F12. error compute
 error_calc <- function(df){
   (df$passengerCount - df$pred)^2
+}
+
+# F13. as.POSIXct convert
+as.p <- function(ts){
+  if(class(ts) == 'factor'){
+    r <-   as.POSIXct(fct2ori(ts),tz = 'UTC')
+  }else if(class(ts) == 'character'){
+    r <-   as.POSIXct(ts,tz = 'UTC')
+  }
+  r
+}
+
+# F14. get area
+get_area <- function(df){
+  substr(df$WIFIAPTag,1,2)
 }
